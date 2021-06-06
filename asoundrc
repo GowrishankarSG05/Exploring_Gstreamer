@@ -1,0 +1,42 @@
+#alsa sound config file for usb device and laptop inbuild speaker device
+
+pcm.mycard {
+    type hw
+    card 1
+}
+pcm.usb {
+    type hw
+    card 2
+}
+ctl.control {
+   type hw
+   card 2
+}  
+
+pcm.test {
+    type plug
+    slave.pcm "usb"
+    slave.ctl "control"
+}
+
+pcm.xillybus {
+    type asym
+    playback.pcm {
+        type plug
+        slave.pcm "mycard"
+        }
+    capture.pcm {
+        type plug
+        slave {
+            pcm {
+                type file
+                file "/dev/null"
+                infile "/home/shankar/learning/alsa/capture"
+                slave.pcm null
+            }
+            rate 48000
+            format s16_le
+            channels 2
+        }
+    }
+}
